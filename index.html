@@ -1,268 +1,466 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>YB CONPANNY</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YB CONMANNY - ACCESO PRIVADO</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+        }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Montserrat',sans-serif;}
-:root{
-  --red:#ff2a2a;
-  --glass:rgba(20,20,20,.65);
-}
-body{
-  background:
-  linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),
-  url("ChatGPT Image 28 ene 2026, 20_32_59.png") center/cover fixed;
-  color:#fff;
-  overflow-x:hidden;
-}
-#particles{position:fixed;width:100%;height:100%;z-index:-1;}
+        /* Efecto matrix de fondo (solo estético) */
+        body::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 0, 0.03) 0px,
+                rgba(0, 0, 0, 0.5) 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            animation: scan 10s linear infinite;
+        }
 
-header{
-  position:fixed;top:0;width:100%;
-  display:flex;justify-content:space-between;align-items:center;
-  padding:18px 40px;
-  background:var(--glass);
-  backdrop-filter:blur(12px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  z-index:1000;
-}
-nav{display:flex;gap:18px;align-items:center;}
-nav a{color:#ddd;text-decoration:none;font-weight:600;}
-nav a:hover{color:var(--red);}
-.btn{
-  background:var(--red);color:#000;
-  padding:10px 18px;border-radius:10px;
-  font-weight:700;box-shadow:0 0 15px var(--red);
-}
-.menu{display:none;font-size:1.8rem;cursor:pointer;}
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
+        }
 
-.hero{
-  height:100vh;
-  display:flex;flex-direction:column;
-  justify-content:center;align-items:center;
-  text-align:center;padding:20px;
-}
-.hero-logo{
-  width:160px;margin-bottom:18px;
-  filter:drop-shadow(0 0 20px rgba(255,42,42,.8));
-  animation:float 3s ease-in-out infinite;
-}
-@keyframes float{50%{transform:translateY(-10px)}}
-.hero h1{font-size:3.6rem;color:var(--red);text-shadow:0 0 25px var(--red);}
-.hero p{color:#ccc;margin:20px 0 30px;max-width:650px;}
-.online{
-  background:rgba(0,0,0,.6);
-  padding:10px 16px;border-radius:10px;
-  color:var(--red);font-weight:700;
-}
+        .login-container {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 400px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            animation: fadeInUp 0.8s ease-out;
+        }
 
-.hero-badges{
-  display:flex;
-  gap:14px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:18px;
-}
-.hero-badge{
-  background:rgba(0,0,0,.6);
-  border:1px solid rgba(255,42,42,.6);
-  padding:8px 16px;
-  border-radius:20px;
-  font-size:.85rem;
-  font-weight:700;
-  box-shadow:0 0 14px rgba(255,42,42,.4);
-}
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
 
-.section{
-  max-width:1100px;margin:70px auto;padding:45px;
-  background:var(--glass);backdrop-filter:blur(10px);
-  border-radius:20px;
-}
-.section h2{text-align:center;color:var(--red);margin-bottom:25px;}
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
-}
-.card{
-  background:#151515;padding:25px;
-  border-radius:14px;transition:.25s;
-}
-.card:hover{transform:translateY(-6px);box-shadow:0 0 18px var(--red);}
+        .login-header h1 {
+            color: white;
+            font-size: 2.5em;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px #00ff00;
+            margin-bottom: 10px;
+        }
 
-.music{
-  position:fixed;bottom:20px;right:20px;
-  background:var(--red);border:none;
-  padding:14px;border-radius:50%;
-  cursor:pointer;
-}
-.fundadores{
-  position:fixed;bottom:20px;left:20px;
-  background:rgba(0,0,0,.65);
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,42,42,.6);
-  padding:12px 18px;border-radius:14px;
-  font-size:.85rem;
-  box-shadow:0 0 18px rgba(255,42,42,.6);
-}
-.fundadores span{display:block;color:var(--red);font-weight:800;}
+        .login-header .subtitle {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+            position: relative;
+        }
 
-@media(max-width:768px){
-  nav{display:none;flex-direction:column;position:absolute;top:70px;right:20px;background:#111;padding:15px;border-radius:12px;}
-  nav.active{display:flex;}
-  .menu{display:block;}
-}
-</style>
+        .login-header .subtitle::before,
+        .login-header .subtitle::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30px;
+            height: 1px;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .login-header .subtitle::before {
+            left: -40px;
+        }
+
+        .login-header .subtitle::after {
+            right: -40px;
+        }
+
+        /* CAMPO DE CONTRASEÑA - ÚNICO CAMPO */
+        .password-field {
+            margin-bottom: 25px;
+        }
+
+        .password-field label {
+            display: block;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+        }
+
+        .password-input-wrapper input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            font-size: 1.1em;
+            color: white;
+            transition: all 0.3s;
+            letter-spacing: 3px;
+        }
+
+        .password-input-wrapper input:focus {
+            outline: none;
+            border-color: #00ff00;
+            background: rgba(0, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+        }
+
+        .password-input-wrapper input::placeholder {
+            color: rgba(255, 255, 255, 0.3);
+            letter-spacing: normal;
+        }
+
+        /* LA CONTRASEÑA YA NO SE MUESTRA - SOLO TÚ LA SABES */
+        /* El cuadro de contraseña visible ha sido ELIMINADO */
+
+        .login-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #00ff00 0%, #00cc00 100%);
+            color: black;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            font-weight: 900;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 0, 0.4);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .login-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .login-button:hover::before {
+            left: 100%;
+        }
+
+        /* MENSAJES MEJORADOS */
+        .message {
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            text-align: center;
+            font-weight: 500;
+            display: none;
+            animation: slideIn 0.3s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.success {
+            background: rgba(0, 255, 0, 0.2);
+            color: #00ff00;
+            border: 1px solid #00ff00;
+            text-shadow: 0 0 5px #00ff00;
+        }
+
+        .message.error {
+            background: rgba(255, 0, 0, 0.2);
+            color: #ff4444;
+            border: 1px solid #ff4444;
+            text-shadow: 0 0 5px #ff4444;
+        }
+
+        /* PANEL OCULTO QUE SE MUESTRA AL ACCEDER */
+        .hidden-panel {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 15px;
+            border: 1px solid #00ff00;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .hidden-panel h3 {
+            color: #00ff00;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.3em;
+        }
+
+        .hidden-panel .option {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 10px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+
+        .hidden-panel .option:hover {
+            background: rgba(0, 255, 0, 0.1);
+            border-color: #00ff00;
+            transform: translateX(5px);
+        }
+
+        .hidden-panel .option span {
+            color: #00ff00;
+            margin-right: 10px;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9em;
+        }
+
+        .register-link a {
+            color: #00ff00;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* Decoración cyberpunk */
+        .glitch {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: rgba(0, 255, 0, 0.1);
+            font-size: 10vw;
+            font-weight: 900;
+            transform: rotate(90deg);
+            white-space: nowrap;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .login-container {
+                margin: 20px;
+                padding: 30px 20px;
+            }
+
+            .login-header h1 {
+                font-size: 2em;
+            }
+        }
+    </style>
 </head>
-
 <body>
+    <div class="glitch">YB CONMANNY</div>
+    
+    <div class="login-container">
+        <div class="login-header">
+            <h1>⚡ YB ⚡</h1>
+            <div class="subtitle">ACCESO RESTRINGIDO</div>
+        </div>
 
-<canvas id="particles"></canvas>
+        <!-- ÚNICO CAMPO: CONTRASEÑA -->
+        <div class="password-field">
+            <label>🔐 CLAVE DE ACCESO</label>
+            <div class="password-input-wrapper">
+                <input type="password" id="password" placeholder="••••••••" autofocus>
+            </div>
+        </div>
 
-<header>
-  <img src="trapstarz-logo.png" style="height:48px;">
-  <div class="menu" onclick="toggleMenu()">☰</div>
-  <nav id="nav">
-    <a href="#">Inicio</a>
-    <a href="#proyectos">Proyectos</a>
-    <a href="#productos">Productos</a>
-    <a href="#info">Sobre</a>
-    <a class="btn" target="_blank" href="https://discord.gg/fTpBeG8YHU">Discord</a>
-  </nav>
-</header>
+        <!-- MENSAJE DE RESPUESTA -->
+        <div class="message" id="message"></div>
 
-<section class="hero">
-  <img src="trapstarz-logo.png" class="hero-logo">
-  <h1>TrapStarz Roleplay</h1>
-  <p>La experiencia definitiva de Roleplay urbano. Cada decisión crea tu leyenda.</p>
+        <!-- PANEL OCULTO (se muestra solo con clave correcta) -->
+        <div class="hidden-panel" id="hiddenPanel">
+            <h3>🔓 PANEL DE CONTROL</h3>
+            <div class="option" onclick="window.open('YB_CONMANNY.py', '_blank')">
+                <span>📁</span> ABRIR TOOLS PRINCIPAL
+            </div>
+            <div class="option" onclick="alert('SISTEMA: Acceso concedido a YB CONMANNY')">
+                <span>💻</span> TERMINAL DE COMANDOS
+            </div>
+            <div class="option" onclick="window.location.href='https://www.google.com'">
+                <span>🌐</span> MODO NAVEGACIÓN
+            </div>
+            <div class="option" onclick="document.body.style.background='linear-gradient(135deg, #000000 0%, #00ff00 100%)'">
+                <span>🎨</span> ACTIVAR MODO VISUAL
+            </div>
+        </div>
 
-  <div class="online">👥 Online: <span id="online">0</span></div>
+        <!-- BOTÓN DE INICIO -->
+        <button class="login-button" onclick="checkPassword()">
+            INGRESAR
+        </button>
 
-  <div class="hero-badges">
-    <div class="hero-badge">📞 Soporte 24/7</div>
-    <div class="hero-badge">🚗 Autos Premium</div>
-    <div class="hero-badge">🧠 Scripts Exclusivos</div>
-    <div class="hero-badge">👨‍💻 Dev Profesional</div>
-  </div>
-</section>
+        <div class="register-link">
+            [ SOLO PERSONAL AUTORIZADO ]
+        </div>
+    </div>
 
-<section id="proyectos" class="section">
-<h2>🚀 Proyectos Activos</h2>
-<div class="cards">
-<div class="card">🔥 <b>TrapStarz RP</b><br><br>Servidor RP serio con sistemas exclusivos, economía balanceada y eventos constantes.</div>
-<div class="card">🌴 <b>South Puerto Rico</b><br><br>Mapa inspirado en PR con barrios reales y ambientación premium.</div>
-<div class="card">🚗 <b>Sistemas de Vehículos</b><br><br>Autos realistas, tuning avanzado y físicas optimizadas.</div>
-<div class="card">🗺️ <b>Mapas Personalizados</b><br><br>Mapas hechos desde cero según tu idea.</div>
-</div>
-</section>
+    <script>
+        // CONTRASEÑA CORRECTA - SOLO TÚ LA SABES
+        const CORRECT_PASSWORD = "Y3zzy_171810";
+        let accessGranted = false;
 
-<section id="productos" class="section">
-<h2>💎 Productos & Servicios</h2>
-<div class="cards">
+        function checkPassword() {
+            const passwordInput = document.getElementById('password');
+            const messageDiv = document.getElementById('message');
+            const hiddenPanel = document.getElementById('hiddenPanel');
+            const enteredPassword = passwordInput.value;
 
-<div class="card">
-<h3>🚘 Autos Custom Premium</h3>
-<ul>
-<li>🔥 Modelos exclusivos</li>
-<li>⚙️ Tuning completo</li>
-<li>🚀 Sin lag</li>
-<li>🎨 Personalizados a tu gusto</li>
-<li>🎮 Listos para RP serio</li>
-</ul>
-</div>
+            if (enteredPassword === CORRECT_PASSWORD) {
+                // CONTRASEÑA CORRECTA - ACCESO CONCEDIDO
+                messageDiv.className = 'message success';
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = '✅ ACCESO CONCEDIDO - BIENVENIDO YB CONMANNY';
+                
+                // OCULTAR el mensaje después de 2 segundos
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 2000);
+                
+                // MOSTRAR el panel oculto
+                hiddenPanel.style.display = 'block';
+                
+                // EFECTOS VISUALES
+                document.body.style.background = 'linear-gradient(135deg, #0f0f0f 0%, #004400 100%)';
+                passwordInput.style.borderColor = '#00ff00';
+                
+                // SONIDO MENTAL (simulado)
+                console.log('%c🔓 SISTEMA DESBLOQUEADO', 'color: #00ff00; font-size: 20px;');
+                
+                accessGranted = true;
+                
+            } else {
+                // CONTRASEÑA INCORRECTA
+                messageDiv.className = 'message error';
+                messageDiv.style.display = 'block';
+                messageDiv.innerHTML = '❌ CLAVE INCORRECTA - ACCESO DENEGADO';
+                
+                // OCULTAR panel si estaba visible
+                hiddenPanel.style.display = 'none';
+                
+                // EFECTO DE ERROR
+                passwordInput.style.borderColor = '#ff4444';
+                passwordInput.style.boxShadow = '0 0 20px #ff4444';
+                
+                setTimeout(() => {
+                    passwordInput.style.borderColor = 'rgba(255,255,255,0.1)';
+                    passwordInput.style.boxShadow = 'none';
+                }, 1000);
+                
+                // LIMPIAR mensaje después de 2 segundos
+                setTimeout(() => {
+                    messageDiv.style.display = 'none';
+                }, 2000);
+                
+                accessGranted = false;
+            }
+            
+            // LIMPIAR campo de contraseña por seguridad
+            passwordInput.value = '';
+        }
 
-<div class="card">
-<h3>🔫 Armas Personalizadas</h3>
-<ul>
-<li>🎯 Daño balanceado</li>
-<li>🕹️ Animaciones smooth</li>
-<li>🛠️ Sin bugs</li>
-<li>⚖️ Balance RP</li>
-</ul>
-</div>
+        // ENTER para enviar
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
 
-<div class="card">
-<h3>🧠 Scripts Exclusivos</h3>
-<ul>
-<li>🏦 Bancos & economía</li>
-<li>👮‍♂️ Trabajos & facciones</li>
-<li>🏠 Housing</li>
-<li>🚗 Sistemas de vehículos</li>
-</ul>
-</div>
+        // INTENTOS DE SEGURIDAD
+        let attempts = 0;
+        const originalCheck = checkPassword;
+        window.checkPassword = function() {
+            attempts++;
+            if (attempts > 5) {
+                alert('⚠️ DEMASIADOS INTENTOS - ESPERA 30 SEGUNDOS');
+                document.getElementById('password').disabled = true;
+                document.querySelector('.login-button').disabled = true;
+                
+                setTimeout(() => {
+                    document.getElementById('password').disabled = false;
+                    document.querySelector('.login-button').disabled = false;
+                    attempts = 0;
+                }, 30000);
+            }
+            originalCheck();
+        };
 
-<div class="card">
-<h3>👨‍💻 Equipo Dev Profesional</h3>
-<ul>
-<li>👷 Builders</li>
-<li>💻 Scripters</li>
-<li>🚘 Devs de autos</li>
-<li>📞 Soporte serio</li>
-</ul>
-</div>
-
-</div>
-</section>
-
-<section id="info" class="section">
-<h2>ℹ️ Sobre TrapStarz</h2>
-<div class="cards">
-<div class="card">👑 Proyecto RP profesional enfocado en calidad.</div>
-<div class="card">🎯 Visión: ser uno de los mejores servidores RP.</div>
-<div class="card">💯 Calidad, soporte y seriedad garantizada.</div>
-</div>
-</section>
-
-<footer style="text-align:center;padding:40px;color:#666;">
-© 2026 TrapStarz
-</footer>
-
-<div class="fundadores">
-<span>Fundadores Oficiales</span>
-YB Development
-</div>
-
-<audio id="music" loop>
-<source src="music.mp3">
-</audio>
-<button class="music" onclick="toggleMusic()">▶</button>
-
-<script>
-function toggleMenu(){
-  document.getElementById("nav").classList.toggle("active");
-}
-setInterval(()=>{
-  document.getElementById("online").textContent=Math.floor(Math.random()*60)+30;
-},2000);
-
-const music=document.getElementById("music");
-function toggleMusic(){music.paused?music.play():music.pause();}
-
-const c=document.getElementById("particles");
-const ctx=c.getContext("2d");
-c.width=innerWidth;c.height=innerHeight;
-let p=[];
-for(let i=0;i<80;i++){
-  p.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2,d:Math.random()});
-}
-function draw(){
-  ctx.clearRect(0,0,c.width,c.height);
-  ctx.fillStyle="rgba(255,42,42,.6)";
-  p.forEach(a=>{
-    ctx.beginPath();ctx.arc(a.x,a.y,a.r,0,Math.PI*2);ctx.fill();
-    a.y+=a.d;if(a.y>c.height)a.y=0;
-  });
-  requestAnimationFrame(draw);
-}
-draw();
-</script>
-
+        // MENSAJE INICIAL
+        console.log('%c🔐 SISTEMA BLOQUEADO - INGRESA LA CLAVE', 'color: #ff4444; font-size: 16px;');
+    </script>
 </body>
 </html>
-
