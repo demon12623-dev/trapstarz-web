@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YB CHAT - PODERES ABSOLUTOS</title>
+    <title>YB CHAT - TIEMPO REAL</title>
     <style>
         * {
             margin: 0;
@@ -71,13 +71,6 @@
             width: 90%;
             max-width: 500px;
             box-shadow: 0 0 50px rgba(255, 0, 255, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .login-container.owner-mode {
-            border-color: gold;
-            box-shadow: 0 0 80px gold;
         }
 
         .login-container h1 {
@@ -88,11 +81,6 @@
             -webkit-text-fill-color: transparent;
             text-align: center;
             margin-bottom: 20px;
-        }
-
-        .owner-title {
-            color: gold;
-            text-shadow: 0 0 20px gold;
         }
 
         .input-group {
@@ -106,10 +94,6 @@
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 2px;
-        }
-
-        .input-group.owner label {
-            color: gold;
         }
 
         .input-group input {
@@ -139,10 +123,6 @@
             font-size: 1.3em;
             cursor: pointer;
             transition: all 0.3s;
-        }
-
-        .login-btn.owner {
-            background: linear-gradient(45deg, gold, orange);
         }
 
         .login-btn:hover {
@@ -217,17 +197,21 @@
             margin-bottom: 8px;
             transition: all 0.3s;
             position: relative;
+            border: 1px solid transparent;
+        }
+
+        .user-item.online {
+            border-color: #00ff00;
+            box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+        }
+
+        .user-item.offline {
+            opacity: 0.5;
         }
 
         .user-item.muted {
             opacity: 0.5;
             background: rgba(255, 0, 0, 0.1);
-        }
-
-        .user-item.banned {
-            opacity: 0.3;
-            background: rgba(0, 0, 0, 0.5);
-            text-decoration: line-through;
         }
 
         .user-item.owner-user {
@@ -271,6 +255,17 @@
             height: 8px;
             border-radius: 50%;
             background: #00ff00;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .status-dot.offline {
+            background: #666;
+            animation: none;
         }
 
         .user-actions {
@@ -287,7 +282,7 @@
         }
 
         .action-btn {
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.7);
             border: 1px solid;
             border-radius: 5px;
             padding: 5px 8px;
@@ -352,6 +347,21 @@
             background: linear-gradient(45deg, gold, orange);
         }
 
+        .logout-small {
+            background: none;
+            border: 2px solid #ff4444;
+            color: #ff4444;
+            padding: 5px 10px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .logout-small:hover {
+            background: #ff4444;
+            color: black;
+        }
+
         /* ÁREA DE MENSAJES */
         .messages-area {
             flex: 1;
@@ -375,10 +385,6 @@
 
         .message-wrapper.own-message {
             justify-content: flex-end;
-        }
-
-        .message-wrapper.muted-user {
-            opacity: 0.5;
         }
 
         .message-bubble {
@@ -432,12 +438,12 @@
             height: 25px;
             cursor: pointer;
             display: none;
+            align-items: center;
+            justify-content: center;
         }
 
         .message-wrapper:hover .delete-btn {
             display: flex;
-            align-items: center;
-            justify-content: center;
         }
 
         /* ÁREA DE ENVÍO */
@@ -485,10 +491,6 @@
         .tool-btn:hover {
             background: cyan;
             color: black;
-        }
-
-        .tool-btn.call-btn:hover {
-            background: magenta;
         }
 
         .send-input-area {
@@ -553,8 +555,6 @@
             border-radius: 30px;
             border: 3px solid cyan;
             overflow: hidden;
-            display: flex;
-            flex-direction: column;
         }
 
         .call-header {
@@ -563,16 +563,6 @@
             border-bottom: 2px solid magenta;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .call-header h3 {
-            color: cyan;
-            font-size: 1.5em;
-        }
-
-        .call-participants {
-            color: white;
         }
 
         .call-videos {
@@ -581,7 +571,6 @@
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 20px;
             padding: 20px;
-            overflow-y: auto;
         }
 
         .video-container {
@@ -589,13 +578,6 @@
             border-radius: 20px;
             overflow: hidden;
             position: relative;
-            border: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .video-container.speaking {
-            border-color: cyan;
-            box-shadow: 0 0 30px cyan;
         }
 
         .video-container video {
@@ -612,13 +594,10 @@
             color: white;
             padding: 5px 15px;
             border-radius: 20px;
-            font-size: 0.9em;
         }
 
         .call-controls {
             padding: 20px;
-            background: rgba(0, 0, 0, 0.5);
-            border-top: 2px solid magenta;
             display: flex;
             justify-content: center;
             gap: 20px;
@@ -631,30 +610,11 @@
             border: none;
             cursor: pointer;
             font-size: 1.5em;
-            transition: all 0.3s;
         }
 
         .call-control-btn.end-call {
             background: #ff4444;
             color: white;
-        }
-
-        .call-control-btn.mute {
-            background: rgba(255, 255, 255, 0.1);
-            color: white;
-        }
-
-        .call-control-btn:hover {
-            transform: scale(1.1);
-        }
-
-        .close-call {
-            background: #ff4444;
-            border: none;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 50px;
-            cursor: pointer;
         }
 
         /* MODAL DE RENOMBRAR */
@@ -710,7 +670,6 @@
             border: none;
             border-radius: 15px;
             cursor: pointer;
-            font-weight: bold;
         }
 
         .rename-save {
@@ -721,31 +680,6 @@
         .rename-cancel {
             background: #ff4444;
             color: white;
-        }
-
-        /* MODAL DE IMAGEN */
-        .image-modal {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-        }
-
-        .image-modal.visible {
-            display: flex;
-        }
-
-        .image-modal img {
-            max-width: 90%;
-            max-height: 90%;
-            border: 3px solid cyan;
-            border-radius: 20px;
         }
 
         /* BANEADOS */
@@ -781,24 +715,63 @@
             border-radius: 5px;
             cursor: pointer;
         }
+
+        /* MODAL DE IMAGEN */
+        .image-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+        }
+
+        .image-modal.visible {
+            display: flex;
+        }
+
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 3px solid cyan;
+            border-radius: 20px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: #ff4444;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            color: white;
+            font-size: 1.5em;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
     <!-- PANTALLA DE LOGIN -->
     <div id="loginScreen">
-        <div class="login-container" id="loginContainer">
-            <h1 id="loginTitle">YB CHAT</h1>
-            <div class="input-group" id="nameGroup">
+        <div class="login-container">
+            <h1>YB CHAT</h1>
+            <div class="input-group">
                 <label>👤 TU NOMBRE</label>
                 <input type="text" id="username" placeholder="Ej: YB_Guerrero" autocomplete="off">
             </div>
             
-            <div class="input-group" id="passwordGroup">
+            <div class="input-group">
                 <label>🔐 CLAVE DE ACCESO</label>
                 <input type="password" id="password" placeholder="••••••••">
             </div>
             
-            <button class="login-btn" id="loginBtn" onclick="login()">ENTRAR AL CHAT</button>
+            <button class="login-btn" onclick="login()">ENTRAR AL CHAT</button>
             
             <div class="error-message" id="loginError">❌ Clave incorrecta</div>
         </div>
@@ -820,7 +793,7 @@
                     <!-- Usuarios aparecerán aquí -->
                 </div>
 
-                <!-- LISTA DE BANEADOS (solo visible para owner) -->
+                <!-- LISTA DE BANEADOS (solo owner) -->
                 <div class="banned-users" id="bannedList" style="display: none;">
                     <div class="banned-title">🚫 USUARIOS BANEADOS</div>
                     <div id="bannedUsers"></div>
@@ -830,7 +803,7 @@
             <!-- CHAT PRINCIPAL -->
             <div class="chat-main">
                 <div class="chat-header">
-                    <h2># CHAT PRIVADO</h2>
+                    <h2># CHAT EN VIVO</h2>
                     <div class="current-user" id="currentUserDisplay">
                         <span>👤</span>
                         <span id="currentUserName">Usuario</span>
@@ -876,17 +849,16 @@
         <div class="call-container">
             <div class="call-header">
                 <h3>📹 VIDELLAMADA</h3>
-                <div class="call-participants" id="callParticipants">1 participantes</div>
                 <button class="close-call" onclick="endCall()">✕</button>
             </div>
             
             <div class="call-videos" id="callVideos">
-                <!-- Videos aparecerán aquí -->
+                <!-- Videos -->
             </div>
             
             <div class="call-controls">
-                <button class="call-control-btn mute" id="muteAudioBtn" onclick="toggleMuteAudio()">🎤</button>
-                <button class="call-control-btn mute" id="muteVideoBtn" onclick="toggleMuteVideo()">📹</button>
+                <button class="call-control-btn" onclick="toggleMuteAudio()">🎤</button>
+                <button class="call-control-btn" onclick="toggleMuteVideo()">📹</button>
                 <button class="call-control-btn end-call" onclick="endCall()">📞</button>
             </div>
         </div>
@@ -905,13 +877,14 @@
     </div>
 
     <!-- MODAL DE IMAGEN -->
-    <div class="image-modal" id="imageModal" onclick="this.classList.remove('visible')">
+    <div class="image-modal" id="imageModal">
         <img id="modalImage" src="" alt="">
+        <button class="close-modal" onclick="document.getElementById('imageModal').classList.remove('visible')">✕</button>
     </div>
 
     <script>
         // ============================================
-        // CONFIGURACIÓN DE CLAVES
+        // CONFIGURACIÓN
         // ============================================
         const USER_PASSWORD = "YBdev_12383";
         const OWNER_PASSWORD = "owner_12121027";
@@ -920,15 +893,14 @@
             name: '',
             id: '',
             isOwner: false,
-            muted: false,
-            banned: false
+            muted: false
         };
         
-        // BASES DE DATOS LOCALES
-        let messages = JSON.parse(localStorage.getItem('yb_chat_messages_poderes')) || [];
-        let users = JSON.parse(localStorage.getItem('yb_chat_users_poderes')) || [];
-        let bannedUsers = JSON.parse(localStorage.getItem('yb_chat_banned')) || [];
-        let mutedUsers = JSON.parse(localStorage.getItem('yb_chat_muted')) || [];
+        // BASES DE DATOS
+        let messages = JSON.parse(localStorage.getItem('yb_messages_real')) || [];
+        let users = JSON.parse(localStorage.getItem('yb_users_real')) || [];
+        let bannedUsers = JSON.parse(localStorage.getItem('yb_banned_real')) || [];
+        let mutedUsers = JSON.parse(localStorage.getItem('yb_muted_real')) || [];
 
         // ============================================
         // LOGIN
@@ -944,7 +916,7 @@
             
             // Verificar si está baneado
             if (bannedUsers.includes(username)) {
-                alert('🚫 ESTÁS BANEADO - No puedes entrar');
+                alert('🚫 ESTÁS BANEADO');
                 return;
             }
             
@@ -960,127 +932,148 @@
             // Crear usuario
             currentUser = {
                 name: username,
-                id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
+                id: 'user_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                 isOwner: isOwner,
-                muted: mutedUsers.includes(username),
-                banned: false
+                muted: mutedUsers.includes(username)
             };
             
-            // Guardar en lista de usuarios
+            // Guardar en lista
             users.push({
                 name: currentUser.name,
                 id: currentUser.id,
                 isOwner: currentUser.isOwner,
                 muted: currentUser.muted,
-                online: true
+                online: true,
+                lastSeen: Date.now()
             });
             
-            localStorage.setItem('yb_chat_users_poderes', JSON.stringify(users));
+            localStorage.setItem('yb_users_real', JSON.stringify(users));
             
             // Mostrar chat
             document.getElementById('loginScreen').style.display = 'none';
             document.getElementById('chatScreen').classList.add('visible');
             document.getElementById('currentUserName').textContent = currentUser.name;
             
-            // Si es owner, mostrar badge y controles especiales
             if (currentUser.isOwner) {
                 document.getElementById('ownerBadge').style.display = 'inline';
                 document.getElementById('currentUserDisplay').classList.add('owner');
-                document.getElementById('loginContainer').classList.add('owner-mode');
-                document.getElementById('loginTitle').textContent = 'YB OWNER';
-                document.getElementById('nameGroup').classList.add('owner');
-                document.getElementById('passwordGroup').classList.add('owner');
-                document.getElementById('loginBtn').classList.add('owner');
                 document.getElementById('bannedList').style.display = 'block';
                 updateBannedList();
             }
             
-            // Verificar si está muteado
             if (currentUser.muted) {
                 document.getElementById('mutedNotice').style.display = 'block';
-                disableMessageInput(true);
+                disableInputs(true);
             }
             
-            // Cargar datos
+            // Cargar datos y empezar actualización en tiempo real
             loadMessages();
             updateUsersList();
             
-            // Iniciar actualización periódica
-            setInterval(updateUsersList, 2000);
+            // ACTUALIZACIÓN EN TIEMPO REAL (cada 1 segundo)
+            setInterval(() => {
+                checkForNewMessages();
+                updateUsersList();
+                updateUserOnlineStatus();
+            }, 1000);
+        }
+
+        // ============================================
+        // TIEMPO REAL - CORAZÓN DEL CHAT
+        // ============================================
+        let lastMessageCount = messages.length;
+        
+        function checkForNewMessages() {
+            const currentMessages = JSON.parse(localStorage.getItem('yb_messages_real')) || [];
+            
+            // Si hay nuevos mensajes
+            if (currentMessages.length > lastMessageCount) {
+                const newMessages = currentMessages.slice(lastMessageCount);
+                messages = currentMessages;
+                
+                // Mostrar solo los nuevos
+                newMessages.forEach(msg => {
+                    displayMessage(msg);
+                });
+                
+                lastMessageCount = currentMessages.length;
+            }
+            
+            // Actualizar mensajes existentes (por si alguien borró)
+            if (currentMessages.length < messages.length) {
+                messages = currentMessages;
+                loadMessages(); // Recargar todo si alguien borró
+                lastMessageCount = currentMessages.length;
+            }
+        }
+
+        function updateUserOnlineStatus() {
+            const now = Date.now();
+            
+            // Actualizar lastSeen cada 3 segundos
+            const userIndex = users.findIndex(u => u.id === currentUser.id);
+            if (userIndex !== -1) {
+                users[userIndex].lastSeen = now;
+                localStorage.setItem('yb_users_real', JSON.stringify(users));
+            }
+            
+            // Marcar offline si no se han actualizado en 5 segundos
+            users.forEach(u => {
+                if (now - u.lastSeen > 5000) {
+                    u.online = false;
+                } else {
+                    u.online = true;
+                }
+            });
+            
+            localStorage.setItem('yb_users_real', JSON.stringify(users));
         }
 
         // ============================================
         // PODERES DEL OWNER
         // ============================================
         function banUser(userId) {
-            if (!currentUser.isOwner) {
-                alert('❌ Solo el OWNER puede banear');
-                return;
-            }
+            if (!currentUser.isOwner) return;
             
             const user = users.find(u => u.id === userId);
-            if (!user) return;
+            if (!user || user.isOwner) return;
             
-            if (user.isOwner) {
-                alert('❌ No puedes banear al OWNER');
-                return;
-            }
-            
-            // Añadir a lista de baneados
+            // Banear
             if (!bannedUsers.includes(user.name)) {
                 bannedUsers.push(user.name);
-                localStorage.setItem('yb_chat_banned', JSON.stringify(bannedUsers));
+                localStorage.setItem('yb_banned_real', JSON.stringify(bannedUsers));
             }
             
-            // Eliminar de usuarios activos
+            // Eliminar usuario
             users = users.filter(u => u.id !== userId);
-            localStorage.setItem('yb_chat_users_poderes', JSON.stringify(users));
+            localStorage.setItem('yb_users_real', JSON.stringify(users));
             
             // Eliminar sus mensajes
             messages = messages.filter(m => m.userId !== userId);
-            localStorage.setItem('yb_chat_messages_poderes', JSON.stringify(messages));
+            localStorage.setItem('yb_messages_real', JSON.stringify(messages));
             
             updateUsersList();
             updateBannedList();
             loadMessages();
             
-            alert(`✅ Usuario ${user.name} baneado`);
+            alert(`✅ ${user.name} baneado`);
         }
 
         function muteUser(userId) {
-            if (!currentUser.isOwner) {
-                alert('❌ Solo el OWNER puede mutear');
-                return;
-            }
+            if (!currentUser.isOwner) return;
             
             const user = users.find(u => u.id === userId);
-            if (!user) return;
-            
-            if (user.isOwner) {
-                alert('❌ No puedes mutear al OWNER');
-                return;
-            }
+            if (!user || user.isOwner) return;
             
             if (!mutedUsers.includes(user.name)) {
                 mutedUsers.push(user.name);
-                localStorage.setItem('yb_chat_muted', JSON.stringify(mutedUsers));
+                localStorage.setItem('yb_muted_real', JSON.stringify(mutedUsers));
             }
             
-            // Actualizar estado en usuarios
             user.muted = true;
-            localStorage.setItem('yb_chat_users_poderes', JSON.stringify(users));
+            localStorage.setItem('yb_users_real', JSON.stringify(users));
             
             updateUsersList();
-            
-            alert(`🔇 Usuario ${user.name} muteado`);
-        }
-
-        function unbanUser(username) {
-            if (!currentUser.isOwner) return;
-            
-            bannedUsers = bannedUsers.filter(u => u !== username);
-            localStorage.setItem('yb_chat_banned', JSON.stringify(bannedUsers));
-            updateBannedList();
         }
 
         function unmuteUser(userId) {
@@ -1089,25 +1082,28 @@
             const user = users.find(u => u.id === userId);
             if (user) {
                 mutedUsers = mutedUsers.filter(u => u !== user.name);
-                localStorage.setItem('yb_chat_muted', JSON.stringify(mutedUsers));
+                localStorage.setItem('yb_muted_real', JSON.stringify(mutedUsers));
                 user.muted = false;
-                localStorage.setItem('yb_chat_users_poderes', JSON.stringify(users));
+                localStorage.setItem('yb_users_real', JSON.stringify(users));
                 updateUsersList();
             }
         }
 
+        function unbanUser(username) {
+            bannedUsers = bannedUsers.filter(u => u !== username);
+            localStorage.setItem('yb_banned_real', JSON.stringify(bannedUsers));
+            updateBannedList();
+        }
+
         function renameUser(userId) {
-            if (!currentUser.isOwner) {
-                alert('❌ Solo el OWNER puede cambiar nombres');
-                return;
-            }
+            if (!currentUser.isOwner) return;
             
             const user = users.find(u => u.id === userId);
-            if (!user) return;
-            
-            document.getElementById('renameModal').classList.add('visible');
-            document.getElementById('renameTitle').textContent = `Cambiar nombre de ${user.name}`;
-            document.getElementById('newName').dataset.userId = userId;
+            if (user) {
+                document.getElementById('renameModal').classList.add('visible');
+                document.getElementById('renameTitle').textContent = `Cambiar nombre de ${user.name}`;
+                document.getElementById('newName').dataset.userId = userId;
+            }
         }
 
         function saveRename() {
@@ -1128,10 +1124,9 @@
                     }
                 });
                 
-                localStorage.setItem('yb_chat_users_poderes', JSON.stringify(users));
-                localStorage.setItem('yb_chat_messages_poderes', JSON.stringify(messages));
+                localStorage.setItem('yb_users_real', JSON.stringify(users));
+                localStorage.setItem('yb_messages_real', JSON.stringify(messages));
                 
-                // Si es el usuario actual, actualizar también
                 if (currentUser.id === userId) {
                     currentUser.name = newName;
                     document.getElementById('currentUserName').textContent = newName;
@@ -1149,22 +1144,12 @@
             document.getElementById('newName').value = '';
         }
 
-        function updateBannedList() {
-            const container = document.getElementById('bannedUsers');
-            container.innerHTML = bannedUsers.map(user => `
-                <div class="banned-item">
-                    <span>🚫 ${user}</span>
-                    <button class="unban-btn" onclick="unbanUser('${user}')">QUITAR BAN</button>
-                </div>
-            `).join('');
-        }
-
         // ============================================
         // MENSAJES
         // ============================================
         function sendMessage() {
             if (currentUser.muted) {
-                alert('🔇 ESTÁS MUTEADO - No puedes enviar mensajes');
+                alert('🔇 Estás muteado');
                 return;
             }
             
@@ -1174,7 +1159,7 @@
             if (!text) return;
             
             const message = {
-                id: 'msg_' + Date.now(),
+                id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                 user: currentUser.name,
                 userId: currentUser.id,
                 text: text,
@@ -1184,17 +1169,14 @@
             };
             
             messages.push(message);
-            localStorage.setItem('yb_chat_messages_poderes', JSON.stringify(messages));
+            localStorage.setItem('yb_messages_real', JSON.stringify(messages));
             displayMessage(message);
             
             input.value = '';
         }
 
         function sendImage(input) {
-            if (currentUser.muted) {
-                alert('🔇 ESTÁS MUTEADO');
-                return;
-            }
+            if (currentUser.muted) return;
             
             const file = input.files[0];
             if (!file) return;
@@ -1202,7 +1184,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const message = {
-                    id: 'msg_' + Date.now(),
+                    id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                     user: currentUser.name,
                     userId: currentUser.id,
                     type: 'image',
@@ -1212,7 +1194,7 @@
                 };
                 
                 messages.push(message);
-                localStorage.setItem('yb_chat_messages_poderes', JSON.stringify(messages));
+                localStorage.setItem('yb_messages_real', JSON.stringify(messages));
                 displayMessage(message);
             };
             
@@ -1220,10 +1202,7 @@
         }
 
         function sendVideo(input) {
-            if (currentUser.muted) {
-                alert('🔇 ESTÁS MUTEADO');
-                return;
-            }
+            if (currentUser.muted) return;
             
             const file = input.files[0];
             if (!file) return;
@@ -1231,7 +1210,7 @@
             const reader = new FileReader();
             reader.onload = function(e) {
                 const message = {
-                    id: 'msg_' + Date.now(),
+                    id: 'msg_' + Date.now() + '_' + Math.random().toString(36).substr(2, 5),
                     user: currentUser.name,
                     userId: currentUser.id,
                     type: 'video',
@@ -1241,7 +1220,7 @@
                 };
                 
                 messages.push(message);
-                localStorage.setItem('yb_chat_messages_poderes', JSON.stringify(messages));
+                localStorage.setItem('yb_messages_real', JSON.stringify(messages));
                 displayMessage(message);
             };
             
@@ -1253,10 +1232,8 @@
             
             if (message && (message.userId === currentUser.id || currentUser.isOwner)) {
                 messages = messages.filter(m => m.id !== messageId);
-                localStorage.setItem('yb_chat_messages_poderes', JSON.stringify(messages));
+                localStorage.setItem('yb_messages_real', JSON.stringify(messages));
                 loadMessages();
-            } else {
-                alert('❌ Solo puedes borrar tus mensajes');
             }
         }
 
@@ -1266,12 +1243,7 @@
             const wrapper = document.createElement('div');
             wrapper.className = `message-wrapper ${message.userId === currentUser.id ? 'own-message' : ''}`;
             
-            if (mutedUsers.includes(message.user)) {
-                wrapper.classList.add('muted-user');
-            }
-            
             let content = '';
-            
             if (message.type === 'text') {
                 content = `<div class="message-text">${message.text}</div>`;
             } else if (message.type === 'image') {
@@ -1283,7 +1255,7 @@
             wrapper.innerHTML = `
                 <div class="message-bubble">
                     <div class="message-header">
-                        <span>${message.user} ${message.userId === currentUser.id ? '(tú)' : ''}</span>
+                        <span>${message.user}</span>
                         <span class="message-time">${message.time}</span>
                     </div>
                     ${content}
@@ -1303,81 +1275,23 @@
         }
 
         // ============================================
-        // VIDELLAMADA
-        // ============================================
-        let localStream;
-        let peerConnections = {};
-
-        async function startCall() {
-            try {
-                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-                
-                document.getElementById('callModal').classList.add('visible');
-                
-                const localVideoContainer = document.createElement('div');
-                localVideoContainer.className = 'video-container';
-                localVideoContainer.innerHTML = `
-                    <video id="localVideo" autoplay muted></video>
-                    <div class="video-label">${currentUser.name} (tú)</div>
-                `;
-                
-                document.getElementById('callVideos').appendChild(localVideoContainer);
-                
-                const localVideo = document.getElementById('localVideo');
-                localVideo.srcObject = localStream;
-                
-                // Aquí iría la lógica de WebRTC para conectar con otros usuarios
-                // Pero para mantenerlo simple, simulamos otros participantes
-                
-                updateCallParticipants();
-                
-            } catch (err) {
-                alert('❌ Error al acceder a cámara/micrófono: ' + err.message);
-            }
-        }
-
-        function endCall() {
-            if (localStream) {
-                localStream.getTracks().forEach(track => track.stop());
-            }
-            
-            document.getElementById('callModal').classList.remove('visible');
-            document.getElementById('callVideos').innerHTML = '';
-        }
-
-        function toggleMuteAudio() {
-            if (localStream) {
-                const audioTrack = localStream.getAudioTracks()[0];
-                audioTrack.enabled = !audioTrack.enabled;
-                document.getElementById('muteAudioBtn').style.opacity = audioTrack.enabled ? '1' : '0.5';
-            }
-        }
-
-        function toggleMuteVideo() {
-            if (localStream) {
-                const videoTrack = localStream.getVideoTracks()[0];
-                videoTrack.enabled = !videoTrack.enabled;
-                document.getElementById('muteVideoBtn').style.opacity = videoTrack.enabled ? '1' : '0.5';
-            }
-        }
-
-        function updateCallParticipants() {
-            document.getElementById('callParticipants').textContent = 
-                `${users.length} participantes`;
-        }
-
-        // ============================================
         // USUARIOS
         // ============================================
         function updateUsersList() {
             const list = document.getElementById('usersList');
+            const now = Date.now();
+            
+            // Actualizar online status
+            users.forEach(u => {
+                u.online = (now - u.lastSeen < 5000);
+            });
             
             list.innerHTML = users.map(user => {
                 const isMuted = mutedUsers.includes(user.name);
-                const isCurrentUser = user.id === currentUser.id;
+                const isOnline = user.online;
                 
                 return `
-                    <div class="user-item ${isMuted ? 'muted' : ''} ${user.isOwner ? 'owner-user' : ''}">
+                    <div class="user-item ${isOnline ? 'online' : 'offline'} ${isMuted ? 'muted' : ''} ${user.isOwner ? 'owner-user' : ''}">
                         <div class="user-avatar">${user.name.charAt(0)}</div>
                         <div class="user-info">
                             <div class="user-name">
@@ -1385,15 +1299,18 @@
                                 ${isMuted ? '🔇' : ''}
                             </div>
                             <div class="user-status">
-                                <span class="status-dot"></span>
-                                En línea
+                                <span class="status-dot ${isOnline ? '' : 'offline'}"></span>
+                                ${isOnline ? 'En línea' : 'Desconectado'}
                             </div>
                         </div>
                         
                         ${currentUser.isOwner && !user.isOwner ? `
                             <div class="user-actions">
                                 <button class="action-btn ban" onclick="banUser('${user.id}')">BAN</button>
-                                <button class="action-btn mute" onclick="muteUser('${user.id}')">MUTE</button>
+                                ${isMuted ? 
+                                    `<button class="action-btn" onclick="unmuteUser('${user.id}')">UNMUTE</button>` :
+                                    `<button class="action-btn mute" onclick="muteUser('${user.id}')">MUTE</button>`
+                                }
                                 <button class="action-btn rename" onclick="renameUser('${user.id}')">REN</button>
                             </div>
                         ` : ''}
@@ -1401,15 +1318,76 @@
                 `;
             }).join('');
             
-            document.getElementById('onlineCount').textContent = users.length;
+            const onlineCount = users.filter(u => u.online).length;
+            document.getElementById('onlineCount').textContent = onlineCount;
         }
 
-        function disableMessageInput(disabled) {
+        function updateBannedList() {
+            const container = document.getElementById('bannedUsers');
+            container.innerHTML = bannedUsers.map(user => `
+                <div class="banned-item">
+                    <span>🚫 ${user}</span>
+                    <button class="unban-btn" onclick="unbanUser('${user}')">QUITAR BAN</button>
+                </div>
+            `).join('');
+        }
+
+        function disableInputs(disabled) {
             document.getElementById('messageInput').disabled = disabled;
             document.getElementById('sendBtn').disabled = disabled;
             document.getElementById('imageBtn').disabled = disabled;
             document.getElementById('videoBtn').disabled = disabled;
             document.getElementById('callBtn').disabled = disabled;
+        }
+
+        // ============================================
+        // VIDELLAMADA
+        // ============================================
+        let localStream;
+
+        async function startCall() {
+            try {
+                localStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+                
+                document.getElementById('callModal').classList.add('visible');
+                
+                const localVideo = document.createElement('video');
+                localVideo.autoplay = true;
+                localVideo.muted = true;
+                localVideo.srcObject = localStream;
+                
+                const container = document.createElement('div');
+                container.className = 'video-container';
+                container.innerHTML = '<div class="video-label">Tú</div>';
+                container.appendChild(localVideo);
+                
+                document.getElementById('callVideos').appendChild(container);
+                
+            } catch (err) {
+                alert('Error con cámara/micrófono');
+            }
+        }
+
+        function endCall() {
+            if (localStream) {
+                localStream.getTracks().forEach(track => track.stop());
+            }
+            document.getElementById('callModal').classList.remove('visible');
+            document.getElementById('callVideos').innerHTML = '';
+        }
+
+        function toggleMuteAudio() {
+            if (localStream) {
+                const track = localStream.getAudioTracks()[0];
+                track.enabled = !track.enabled;
+            }
+        }
+
+        function toggleMuteVideo() {
+            if (localStream) {
+                const track = localStream.getVideoTracks()[0];
+                track.enabled = !track.enabled;
+            }
         }
 
         // ============================================
@@ -1421,16 +1399,13 @@
         }
 
         function logout() {
-            // Eliminar usuario actual
             users = users.filter(u => u.id !== currentUser.id);
-            localStorage.setItem('yb_chat_users_poderes', JSON.stringify(users));
+            localStorage.setItem('yb_users_real', JSON.stringify(users));
             
             document.getElementById('loginScreen').style.display = 'flex';
             document.getElementById('chatScreen').classList.remove('visible');
-            
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
-            document.getElementById('loginError').style.display = 'none';
         }
 
         // ENTER para login
